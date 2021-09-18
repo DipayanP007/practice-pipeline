@@ -1,17 +1,36 @@
 pipeline{
     agent any
 
+    tools{
+        maven 'Maven 3.8.2'
+        jdk ''
+    }
     stages{
         stage("Build"){
             steps{
-                echo "========executing A========"
+                echo "========executing Build========"
+                sh '''
+                mvn clean compile
+                '''
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                
+            
+        }
+        stage("Test"){
+            steps{
+                sh 'mvn test'
             }
+            
+        }
+        stage("Package")
+        {
+            steps{
+                sh 'mvn package'
+            }
+        }
+    }
+    post{
+        success{
+            sh 'echo Success'
         }
     }
     
